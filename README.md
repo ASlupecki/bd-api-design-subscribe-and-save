@@ -27,13 +27,13 @@ Requirements:
 
 Let’s start off by defining the Subscription object. Each of the Subscription members are listed in the table below. For each member fill in the data type that should be used and if any traits should be applied. We’ll define these types when we add the operation.
 
-| name   |  type | is required? |
-|--------|-------|-------|
-|userId|String|yes|
-|asin|||
-|quantity|||
-|monthlyFrequency|||
-|nextShipmentMonth|||
+| name   | type    | is required? |
+|--------|---------|--------------|
+|userId| String  | yes          |
+|asin| String  | yes          |
+|quantity| Integer | yes          |
+|monthlyFrequency|| yes     |
+|nextShipmentMonth|| no      |
 
 For this operation, we’ll define the URI as /subscriptions/users/{userId}/products/{asin} and use the PUT verb. 
 - Why do you think we should use PUT here instead of a POST?

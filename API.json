@@ -1,0 +1,206 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Subscribe and Save",
+    "version": "0.0.2"
+  },
+  "paths": {
+    "/subscriptions/users/{userId}/products/{asin}": {
+      "put": {
+        "description": "This is used to add a subscription to a user-product relationship",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "85673648fjsdh08"
+            }
+          },
+          {
+            "name": "asin",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "UAS000-sjfidhihbd477"
+            }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "required": true,
+            "description": "The quantity of product to be delivered each time",
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "example": 2
+            }
+          },
+          {
+            "name": "monthlyFrequency",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 4,
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Subscription"
+                  },
+                  "example": {
+                    "userId": "123123123123",
+                    "asin": "UAS0000001-aaaaaaa",
+                    "quantity": 4,
+                    "monthlyFrequency": 2,
+                    "nextShipmentMonth": "March"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 400,
+                    "message": "Invalid Inputs"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 500,
+                    "message": "Server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/subscriptions": {
+      "get": {
+        "description": "Provides the user with all of their active subscriptions",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "the id of the user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "85673648fjsdh08"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Subscription"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "asin": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "monthlyFrequency": {
+            "type": "integer"
+          },
+          "nextShipmentMonth": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
